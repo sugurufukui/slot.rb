@@ -7,7 +7,7 @@ point = 0
   
 loop do
   select = [10,30,50,"やめとく"]
-    
+  puts ""
   puts "何コイン入れますか？"
   puts "コインをたくさん入れるとコインとポイントがたくさんもらえるよ"
   puts "[0]10コイン,[1]30コイン,[2]50コイン,[3]やめとく"
@@ -39,15 +39,15 @@ loop do
   end
 
 #スロットの数字
-  num1 = rand(1..2)
-  num2 = rand(7..8)
-  num3 = rand(1..2)
-  num4 = rand(1..2)
-  num5 = rand(7..8)
-  num6 = rand(1..2)
-  num7 = rand(1..2)
-  num8 = rand(7..8)
-  num9 = rand(1..2)
+  num1 = rand(1..9)
+  num2 = rand(7..9)
+  num3 = rand(1..9)
+  num4 = rand(1..9)
+  num5 = rand(7..9)
+  num6 = rand(1..9)
+  num7 = rand(1..9)
+  num8 = rand(7..9)
+  num9 = rand(1..9)
       
   puts "エンターを３回押して数字を揃えよう"
   puts = gets
@@ -80,36 +80,57 @@ loop do
         (num1 == num5) && (num5 == num9) ||
         (num3 == num5) && (num5 == num9) 
 
- #当たりの種類（1倍、3倍、5倍）
-  
+#獲得コイン&ポイントの種類(3種類)
+#（大当たり→コイン10枚のとき1倍、コイン30枚のとき3倍、コイン50枚のとき5倍）
+#（当たり→コイン10枚のとき1/2倍、コイン30枚のとき3/2倍、コイン50枚のとき5/2倍）
+#通常はコイン100枚、ポイント50
   get_coin = 100
-  get_point =50
+  get_point = 50
   
-  case big_hit
-  when putin_coin == 0
-    get_coin *= 1
-    get_point *= 1
-  when putin_coin == 1
-    get_coin *= 3
-    get_point *= 3
-  when putin_coin == 2
-    get_coin *= 5
-    get_point *= 5
+  case putin_coin
+  #コイン10枚のとき：大当たり→コイン100枚、ポイント50　当たり→コイン50枚、ポイント25
+  when 0
+    if big_hit
+      get_coin *= 1
+      get_point *= 1
+    elsif hit
+      get_coin *= 1 
+      get_coin /= 2
+      get_point *= 1
+      get_point /= 2
+    else
+      get_coin = 0
+      get_point = 0
+    end
+  #コイン30枚のとき：大当たり→コイン300枚、ポイント150　当たり→コイン150枚、ポイント75
+  when 1
+    if big_hit
+      get_coin *= 3
+      get_point *= 3
+    elsif hit
+     get_coin *= 3 
+      get_coin /= 2
+      get_point *= 3
+      get_point /= 2
+    else
+      get_coin = 0
+      get_point = 0
+    end
+  #コイン50枚のとき：大当たり→コイン500枚、ポイント250　当たり→コイン250枚、ポイント125
+  when 2
+    if big_hit
+      get_coin *= 5
+      get_point *= 5
+    elsif hit
+     get_coin *= 5 
+      get_coin /= 2
+      get_point *= 5
+      get_point /= 2
+    else
+      get_coin = 0
+      get_point = 0
+    end
   end
-  
-  #big_hitの半分のコインとポイントがもらえる
-  case hit
-  when putin_coin == 0
-    get_coin *= 1 / 2
-    get_point *= 1 / 2
-  when putin_coin == 1
-    get_coin *= 3 / 2
-    get_point *= 3 / 2
-  when putin_coin == 2
-    get_coin *= 5 / 2
-    get_point *= 5 / 2
-  end
-  
   
   if big_hit
     puts "ラッキーセブン！777！おめでとうございます！！"
@@ -123,7 +144,6 @@ loop do
     puts "残りのコイン数：#{coin}"
     puts "これまでに獲得したポイント：#{point}"
   
-    
   elsif hit
     puts "数字が揃いました！おめでとうございます！！"
     puts ""
@@ -136,7 +156,8 @@ loop do
     puts "これまでに獲得したポイント：#{point}"
     
   else
-    puts "残念"
+    puts ""
+    puts "残念!!"
     puts ""
     puts "残りのコイン数：#{coin}"
     puts "これまでに獲得したポイント：#{point}"
